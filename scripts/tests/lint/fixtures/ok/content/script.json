@@ -1,0 +1,436 @@
+{
+  "meta": {
+    "brand": "GPT-6",
+    "brandAccent": "ASTRA",
+    "source": "OPENAI · 2026",
+    "tagline": "新一代智能",
+    "finalLine": "新一代智能，已经到来",
+    "footer": "数据来源：OpenAI 发布页 · 竞品分数为 OpenAI 报告值",
+    "bottomNote": "30fps · 3:4 · 中文解说版"
+  },
+  "chapters": [
+    {
+      "id": "cu",
+      "num": "01",
+      "title": "全球最强的电脑操作模型",
+      "sub": "Computer use"
+    },
+    {
+      "id": "pro",
+      "num": "02",
+      "title": "专业工作，一步到位",
+      "sub": "Professional work"
+    },
+    {
+      "id": "honest",
+      "num": "03",
+      "title": "但也别吹过头",
+      "sub": "Where it does not win"
+    },
+    {
+      "id": "avail",
+      "num": "04",
+      "title": "怎么用上、多少钱",
+      "sub": "Availability & pricing"
+    }
+  ],
+  "beats": [
+    {
+      "id": "hook",
+      "kind": "hook",
+      "role": "open",
+      "short": true,
+      "energy": 5,
+      "narration": "家人们，GPT-6 Astra 来了，我看完发布页直接坐不住了。",
+      "hook": {
+        "text": "GPT-6 到底有多强？",
+        "sub": "3 分钟看完发布页",
+        "visual": {
+          "kind": "clip",
+          "src": "clips/01.mp4",
+          "w": 1600,
+          "h": 800,
+          "from": 0,
+          "to": 4
+        }
+      }
+    },
+    {
+      "id": "promise",
+      "kind": "promise",
+      "role": "open",
+      "narration": "三分钟，我带你们看三件事：电脑操作、专业工作，还有它没赢的地方。",
+      "promise": {
+        "text": "3 分钟讲清 3 件事",
+        "items": [
+          "电脑操作",
+          "专业工作",
+          "没赢的地方"
+        ]
+      }
+    },
+    {
+      "id": "ch-cu",
+      "kind": "chapter",
+      "chapter": "cu"
+    },
+    {
+      "id": "bench-cu",
+      "kind": "bench",
+      "role": "evidence",
+      "chapter": "cu",
+      "short": true,
+      "narration": "先说电脑操作考试 OSWorld 2.0，它拿了 72.6%，比 Sol 高近 7 个点，Opus 5 是 70.2%，你说狠不狠。",
+      "lines": [
+        {
+          "text": "OSWorld 2.0 拿了 72.6%",
+          "hot": [
+            "72.6%"
+          ]
+        },
+        {
+          "text": "比 Sol 高近 7 个点",
+          "hot": [
+            "7 个点"
+          ]
+        },
+        {
+          "text": "Opus 5 也被压住",
+          "hot": [
+            "压住"
+          ]
+        }
+      ],
+      "cards": [
+        {
+          "t": 1.5,
+          "d": 5,
+          "kind": "stat",
+          "label": "OSWorld 2.0",
+          "value": 72.6,
+          "unit": "%",
+          "prev": 65.7,
+          "prevLabel": "GPT-5.6 Sol"
+        }
+      ],
+      "bench": {
+        "tables": [
+          "osworld"
+        ],
+        "mode": "duel",
+        "heading": "电脑操作",
+        "footnote": "* Claude 分数由第三方复现"
+      }
+    },
+    {
+      "id": "kicad",
+      "kind": "clip",
+      "role": "evidence",
+      "chapter": "cu",
+      "short": true,
+      "narration": "先看这个，它在 KiCad 里布线一块 PCB，元件摆放、走线全自己来，我看得一愣一愣的。",
+      "takes": [
+        {
+          "text": "我看得一愣一愣的"
+        }
+      ],
+      "lines": [
+        {
+          "text": "看它在 KiCad 里布线 PCB",
+          "hot": [
+            "PCB"
+          ]
+        },
+        {
+          "text": "元件摆放、走线一气呵成",
+          "hot": [
+            "一气呵成"
+          ]
+        }
+      ],
+      "clip": {
+        "src": "clips/01.mp4",
+        "w": 1600,
+        "h": 800,
+        "from": 0,
+        "to": 9,
+        "rate": 1.5,
+        "tag": "KiCad · PCB 布线",
+        "focus": {
+          "x": 200,
+          "y": 100,
+          "w": 800,
+          "h": 400
+        },
+        "resultAt": 8,
+        "bg": "blur"
+      }
+    },
+    {
+      "id": "excel",
+      "kind": "clip",
+      "role": "evidence",
+      "chapter": "cu",
+      "short": true,
+      "narration": "再来个狠的，财务建模世界杯的 Excel 实战题，公式、表格、答案一口气搞定，你手动做要半天。",
+      "lines": [
+        {
+          "text": "财务建模世界杯实战题",
+          "hot": [
+            "世界杯"
+          ]
+        },
+        {
+          "text": "公式表格答案一次到位",
+          "hot": [
+            "一次到位"
+          ]
+        }
+      ],
+      "cards": [
+        {
+          "t": 1,
+          "d": 3,
+          "kind": "chip",
+          "text": "Excel competition：官方演示片段"
+        }
+      ],
+      "clip": {
+        "src": "clips/01.mp4",
+        "w": 1600,
+        "h": 800,
+        "from": 0,
+        "to": 12,
+        "rate": 2.2,
+        "tag": "Excel · 财务建模世界杯",
+        "bg": "blur"
+      }
+    },
+    {
+      "id": "kin-fast",
+      "kind": "kinetic",
+      "role": "so-what",
+      "chapter": "cu",
+      "short": true,
+      "narration": "每个任务的时间还少了 47%，意味着又准又快，你的活它干得比你快。",
+      "kinetic": {
+        "text": "又准，又快",
+        "sub": "每个任务少 47% 时间"
+      }
+    },
+    {
+      "id": "ch-pro",
+      "kind": "chapter",
+      "chapter": "pro"
+    },
+    {
+      "id": "bench-pro",
+      "kind": "bench",
+      "role": "evidence",
+      "chapter": "pro",
+      "narration": "再看 CAD 建模考试 BenchCAD，95.9%，Fable 5.1 是 84.3%，Sol 是 83.3%。你想想，文档、表格这种活它能真接手。",
+      "lines": [
+        {
+          "text": "BenchCAD 拿到 95.9%",
+          "hot": [
+            "95.9%"
+          ]
+        },
+        {
+          "text": "Fable 5.1 只有 84.3%",
+          "hot": [
+            "84.3%"
+          ]
+        },
+        {
+          "text": "文档表格能真接手",
+          "hot": [
+            "真接手"
+          ]
+        }
+      ],
+      "bench": {
+        "tables": [
+          "benchcad"
+        ],
+        "mode": "duel",
+        "heading": "专业工作",
+        "footnote": "* 见 OpenAI 脚注 5"
+      }
+    },
+    {
+      "id": "take-pro",
+      "kind": "take",
+      "role": "so-what",
+      "chapter": "pro",
+      "narration": "我觉得这波对打工人是真的有用，Cognition 说上线当天就接进了 Devin。",
+      "takes": [
+        {
+          "text": "我觉得这波对打工人是真的有用"
+        },
+        {
+          "text": "Cognition 说上线当天就接进了 Devin",
+          "source": "s1"
+        }
+      ],
+      "take": {
+        "text": "我觉得这波对打工人是真的有用",
+        "source": "s1"
+      }
+    },
+    {
+      "id": "img-slides",
+      "kind": "image",
+      "role": "evidence",
+      "chapter": "pro",
+      "narration": "它还会照着你公司的模板做 PPT，排版、语气都跟着模板走，改都不用改。",
+      "lines": [
+        {
+          "text": "照着模板做 PPT",
+          "hot": [
+            "模板"
+          ]
+        }
+      ],
+      "image": {
+        "src": "images/01.jpg",
+        "w": 1600,
+        "h": 900,
+        "focus": {
+          "x": 100,
+          "y": 50,
+          "w": 900,
+          "h": 500
+        },
+        "caption": "Gaia 幻灯片 · 官方示例"
+      }
+    },
+    {
+      "id": "ch-honest",
+      "kind": "chapter",
+      "chapter": "honest"
+    },
+    {
+      "id": "bench-honest",
+      "kind": "bench",
+      "role": "turn",
+      "chapter": "honest",
+      "short": true,
+      "narration": "但也别吹过头。综合智能指数它 61.2，Fable 5.1 是 65.7，Opus 5 是 63.1，都比它高。你要看的是专项，不是全能。",
+      "lines": [
+        {
+          "text": "综合指数 61.2，不是第一",
+          "hot": [
+            "不是第一"
+          ]
+        },
+        {
+          "text": "Fable 5.1 有 65.7",
+          "hot": [
+            "65.7"
+          ]
+        },
+        {
+          "text": "专项最强，综合没全胜",
+          "hot": [
+            "没全胜"
+          ]
+        }
+      ],
+      "bench": {
+        "tables": [
+          "aaindex"
+        ],
+        "mode": "duel",
+        "heading": "综合指数"
+      }
+    },
+    {
+      "id": "ch-avail",
+      "kind": "chapter",
+      "chapter": "avail"
+    },
+    {
+      "id": "quote-devin",
+      "kind": "quote",
+      "role": "evidence",
+      "chapter": "avail",
+      "narration": "Cognition 的人说，上线第一天就接进了 Devin，测试报告都更清楚了。",
+      "quote": {
+        "text": "上线当天就接进了 Devin，报告更清楚、更简洁",
+        "by": "Silas Alberti, Cognition"
+      }
+    },
+    {
+      "id": "price",
+      "kind": "scorecard",
+      "role": "evidence",
+      "chapter": "avail",
+      "narration": "价格：每百万 token 输入 10 美元、输出 50 美元，Fast 模式快 2.5 倍、价格翻倍。",
+      "lines": [
+        {
+          "text": "输入 $10 · 输出 $50",
+          "hot": [
+            "$50"
+          ]
+        }
+      ],
+      "scorecard": {
+        "title": "API 价格",
+        "rows": [
+          {
+            "label": "输入 / 百万 token",
+            "value": 10,
+            "unit": "$",
+            "hero": true
+          },
+          {
+            "label": "输出 / 百万 token",
+            "value": 50,
+            "unit": "$"
+          }
+        ]
+      }
+    },
+    {
+      "id": "how",
+      "kind": "steps",
+      "role": "evidence",
+      "chapter": "avail",
+      "narration": "怎么用？Plus、Pro、Business、Enterprise 这几天陆续开放，API 里叫 gpt-6-astra，AWS 上也有。",
+      "steps": {
+        "title": "怎么用上",
+        "items": [
+          "ChatGPT 付费档陆续开放",
+          "API：gpt-6-astra",
+          "AWS Bedrock 也有"
+        ]
+      }
+    },
+    {
+      "id": "summary",
+      "kind": "summary",
+      "role": "payoff",
+      "narration": "总结一下：电脑操作最强，专业活能接手，但综合指数没全胜。截图存一下，回头用得上。",
+      "summary": {
+        "title": "一句话总结",
+        "items": [
+          "电脑操作最强",
+          "专业工作能接手",
+          "综合指数没全胜"
+        ]
+      }
+    },
+    {
+      "id": "cta",
+      "kind": "cta",
+      "role": "close",
+      "short": true,
+      "narration": "你们最想拿它干嘛？评论区聊聊！",
+      "cta": {
+        "question": "你最想让它帮你干什么？",
+        "sub": "评论区聊聊"
+      }
+    }
+  ]
+}

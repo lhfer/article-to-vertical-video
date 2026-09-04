@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ledgerly 4.2: shared budgets, offline receipts, and a faster sync engine</title>
+<meta name="description" content="Ledgerly 4.2 ships shared budgets for households, offline receipt capture, and a rebuilt sync engine that is up to 3x faster on slow networks.">
+<meta property="article:published_time" content="2026-08-27T16:00:00Z">
+</head>
+<body>
+<article class="post">
+  <header>
+    <p class="eyebrow">Product update · August 27, 2026</p>
+    <h1>Ledgerly 4.2: shared budgets, offline receipts, and a faster sync engine</h1>
+    <p class="byline">By the Ledgerly team</p>
+  </header>
+  <p class="lede">Ledgerly 4.2 is rolling out today to everyone on iOS, Android and the web. It is our biggest release since 4.0: households can now share a budget without sharing an account, receipts are captured and categorized offline, and the sync engine has been rebuilt from scratch.</p>
+
+  <figure>
+    <img src="https://cdn.example-ledgerly.test/blog/4-2/shared-budgets.png" alt="Two phones showing the same household budget with per-person spending" width="1600" height="1000">
+    <figcaption>Shared budgets keep each person's transactions private while the totals stay in sync.</figcaption>
+  </figure>
+
+  <h2>Shared budgets</h2>
+  <p>Invite up to 5 people to a budget. Everyone sees the category totals and the remaining amount; each person sees only their own transactions unless they choose to share them. Bills that are split are settled inside the budget with a single tap, and the "who owes whom" ledger is recomputed every time a transaction changes.</p>
+  <p>During the beta, 2,300 households used shared budgets for an average of 11 weeks. The most common setup was a couple plus one shared category for groceries.</p>
+
+  <h2>Offline receipts</h2>
+  <p>Point the camera at a receipt with no connection and Ledgerly extracts the merchant, date, total and tax on the device, then files the transaction under the right category. When you are back online, the receipt image is uploaded and the on-device result is checked against the cloud model; in the beta the two agreed on the total 96% of the time.</p>
+
+  <figure>
+    <img src="https://cdn.example-ledgerly.test/blog/4-2/offline-receipt.png" alt="A receipt being captured in airplane mode with the extracted fields highlighted" width="1600" height="1000">
+    <figcaption>Receipt capture works in airplane mode; the upload happens later.</figcaption>
+  </figure>
+
+  <h2>The new sync engine</h2>
+  <p>We rebuilt sync around a per-device change log instead of full-document merges. On a throttled 3G connection, a budget with 10,000 transactions now syncs in 4 seconds instead of 13, and the app no longer blocks the UI while a sync is in flight. Conflicts are resolved per field, so two people editing the same transaction at the same time no longer overwrite each other.</p>
+
+  <h2>Also in this release</h2>
+  <ul>
+    <li>Recurring transactions can now skip a single occurrence.</li>
+    <li>CSV export includes the receipt image URL.</li>
+    <li>The Android widget shows the remaining amount for one chosen category.</li>
+    <li>Ledgerly is now available in Traditional Chinese and Portuguese (Brazil).</li>
+  </ul>
+
+  <h2>Pricing and availability</h2>
+  <p>Shared budgets and offline receipts are included in Ledgerly Plus ($4.99/month or $39/year). The new sync engine is available to everyone, including the free plan. 4.2 is available today; the update reaches all users within 7 days.</p>
+  <p class="footnote">This page is a fictional fixture used only to evaluate the article-to-vertical-video skill.</p>
+</article>
+</body>
+</html>

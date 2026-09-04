@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "article-to-vertical-video/sources",
+  "title": "sources.json — outside sources that takes may cite; never used for on-screen facts",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["sources"],
+  "properties": {
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["id", "url", "quote"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^s[0-9]+$" },
+          "url": { "type": "string" },
+          "title": { "type": "string", "maxLength": 120 },
+          "quote": { "type": "string", "maxLength": 400, "description": "the sentence(s) that support the take; numbers used in the take must appear here" },
+          "fetchedAt": { "type": "string" }
+        }
+      }
+    }
+  }
+}

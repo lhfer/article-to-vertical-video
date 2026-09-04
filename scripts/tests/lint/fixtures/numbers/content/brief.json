@@ -1,0 +1,13 @@
+{
+  "type": "launch-explainer",
+  "targetSeconds": 40,
+  "platforms": [
+    "xhs-3x4"
+  ],
+  "persona": {
+    "viewpoint": "普通用户 / 打工人视角"
+  },
+  "theme": "neon",
+  "mode": "template",
+  "language": "zh-CN"
+}

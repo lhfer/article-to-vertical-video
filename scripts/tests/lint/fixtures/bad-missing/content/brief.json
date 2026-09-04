@@ -1,0 +1,14 @@
+{
+  "type": "launch-explainer",
+  "targetSeconds": 100,
+  "platforms": ["xhs-3x4", "douyin-9x16"],
+  "shortVersion": { "enabled": true, "targetSeconds": 45, "script": "auto-cut" },
+  "persona": { "viewpoint": "普通用户 / 打工人视角", "voiceStyle": "青春活泼，像给朋友讲新闻", "phrasebank": "worker" },
+  "account": { "name": "小李看AI", "badge": "badge.png" },
+  "theme": "neon",
+  "mode": "template",
+  "language": "zh-CN",
+  "source": { "url": "https://openai.com/index/gpt-6-astra/", "title": "GPT-6 Astra: A new generation of intelligence", "fetchedAt": "2026-09-03T15:19:00+08:00", "kind": "url" },
+  "generation": { "provider": "none", "allow": [] },
+  "tts": { "provider": "seed2", "speaker": "zh_male_qingshuangnanda_uranus_bigtts", "rate": 28, "style": "青春活泼的短视频解说" }
+}

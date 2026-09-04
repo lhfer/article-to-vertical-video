@@ -1,0 +1,107 @@
+{
+  "meta": { "brand": "GPT-6", "source": "OPENAI · 2026", "footer": "数据来源：OpenAI 发布页" },
+  "chapters": [
+    { "id": "cu", "num": "01", "title": "全球最强的电脑操作模型", "sub": "Computer use" }
+  ],
+  "beats": [
+    {
+      "id": "Bad_Id",
+      "kind": "kinetic",
+      "role": "open",
+      "chapter": "nope",
+      "narration": "新一代智能震撼登场，见证历史的时刻到了。"
+    },
+    {
+      "id": "hook",
+      "kind": "hook",
+      "role": "open",
+      "short": true,
+      "narration": "家人们，今天必须聊聊 GPT-6 Astra，OpenAI 自己说这是全球最聪明、最听话的模型，我看完发布页直接坐不住了，带你们过一遍。",
+      "hook": {
+        "text": "GPT-6 Astra 到底有多强，今天带你们看完",
+        "visual": { "kind": "clip", "src": "clips/missing.mp4", "w": 1600, "h": 800, "from": 5, "to": 2 }
+      }
+    },
+    { "id": "ch-cu", "kind": "chapter" },
+    {
+      "id": "bench-cu",
+      "kind": "bench",
+      "role": "turn",
+      "chapter": "cu",
+      "narration": "OSWorld 2.0 拿了 72.6%，比 Sol 高近 7 个点，Opus 5 是 70.2%。ZetaBench 59.3% 也是全场最高。",
+      "lines": [
+        { "text": "OSWorld 2.0 这次直接拿到了七十二点六，全场最高分", "hot": ["七十二点六"] },
+        { "text": "比 Sol 高近 7 个点", "hot": ["Sol", "7 个点"] },
+        { "text": "Opus 5 也被压住", "hot": ["碾压"] }
+      ],
+      "cards": [
+        { "t": 1, "d": 5, "kind": "stat", "label": "OSWorld 2.0", "value": 72.6, "unit": "%", "prev": 65.7, "prevLabel": "GPT-5.6 Sol" },
+        { "t": 3, "d": 4, "kind": "stat", "label": "ZetaBench", "value": 59.3, "unit": "%" },
+        { "t": 9, "d": 3, "kind": "chip", "text": "第三张卡片", "source": "s9" }
+      ],
+      "bench": { "tables": ["osworld", "nope-table"], "mode": "duel", "heading": "电脑操作" }
+    },
+    {
+      "id": "clip-a",
+      "kind": "clip",
+      "role": "turn",
+      "chapter": "cu",
+      "narration": "先看这个，它在 KiCad 里布线一块 PCB，原理图丢进去，元件摆放、走线全自己来，出来就是能直接送厂的板子，我看得一愣一愣的。再来个狠的，财务建模世界杯的 Excel 实战题，公式、表格、答案一口气搞定。速度、准确率、判断力，官方说全面刷新了前沿。这个 Unity 城市也是它做的，街景实时走查，就一句提示词，直接出可以玩的 3D 游戏。配合新版 Codex 快了 1.9 倍，视觉判断力这块，进步是肉眼可见的，我觉得这波真的有点东西。",
+      "takes": [
+        { "text": "这句不在旁白里" },
+        { "text": "快了 1.9 倍" },
+        { "text": "我觉得这波真的有点东西", "source": "s9" }
+      ],
+      "clip": { "src": "clips/missing.mp4", "w": 1600, "h": 800, "from": 10, "to": 5, "rate": 5, "tag": "KiCad · PCB 布线", "focus": { "x": 1200, "y": 100, "w": 800, "h": 400 } }
+    },
+    {
+      "id": "clip-b",
+      "kind": "clip",
+      "role": "evidence",
+      "chapter": "cu",
+      "narration": "日常向的也有，读一张 W-2，自动把 1040 报税表填好，我以后真的可以丢给它了。",
+      "clip": { "src": "clips/01.mp4", "w": 1600, "h": 800, "from": 0, "to": 3, "rate": 1, "tag": "Form 1040" }
+    },
+    {
+      "id": "clip-c",
+      "kind": "clip",
+      "role": "evidence",
+      "chapter": "cu",
+      "narration": "Power BI 看板也是顺手的事，我看它像人一样在操作软件。",
+      "clip": { "src": "clips/01.mp4", "w": 1600, "h": 800, "from": 0, "to": 30, "rate": 1, "tag": "Power BI" }
+    },
+    {
+      "id": "clip-c",
+      "kind": "kinetic",
+      "role": "evidence",
+      "narration": "这里是一段刻意写得很长的旁白，用来触发字数超标的警告。它没有超过一点三倍的上限，所以只是警告而不是错误。我们继续往下写，凑够一百四十个字左右，这样在 l 档十五秒乘九等于一百三十五字的预算下，会落在警告区间里，而不是错误区间里，明白了吧，就是这样。再补一句凑字数，让它稳稳超过一百三十五个字。",
+      "kinetic": { "text": "又准，又快" }
+    },
+    {
+      "id": "take-1",
+      "kind": "take",
+      "role": "so-what",
+      "narration": "我赌它 2027 年就普及。",
+      "take": { "text": "我赌它 2027 年就普及", "source": "s9" }
+    },
+    {
+      "id": "shot",
+      "kind": "screenshot",
+      "narration": "看这个截图，重点在右下角。",
+      "screenshot": { "src": "images/missing.png", "w": 1600, "h": 900, "highlight": { "x": 1500, "y": 800, "w": 400, "h": 300 }, "label": "右下角" }
+    },
+    {
+      "id": "img",
+      "kind": "image",
+      "narration": "官方示例图。",
+      "image": { "src": "images/01.jpg", "w": 1600, "h": 900, "focus": { "x": -10, "y": 0, "w": 800, "h": 400 } }
+    },
+    {
+      "id": "outro",
+      "kind": "outro",
+      "role": "close",
+      "narration": "最后说钱：每百万 token 输入 10 美元、输出 50 美元。",
+      "outro": { "lines": ["全球最智能、最对齐的模型", "$10 / $50 每百万输入 / 输出 token"] }
+    }
+  ]
+}

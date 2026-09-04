@@ -1,0 +1,40 @@
+{
+  "type": "launch-explainer",
+  "targetSeconds": 60,
+  "platforms": [
+    "xhs-3x4"
+  ],
+  "shortVersion": {
+    "enabled": true,
+    "targetSeconds": 30,
+    "script": "auto-cut"
+  },
+  "persona": {
+    "viewpoint": "普通用户 / 打工人视角",
+    "voiceStyle": "轻松、口语、像跟朋友聊天",
+    "phrasebank": "worker"
+  },
+  "account": {
+    "name": "示例账号",
+    "badge": "badge.png"
+  },
+  "theme": "neon",
+  "mode": "template",
+  "language": "zh-CN",
+  "source": {
+    "url": "https://example.com/launch",
+    "title": "示例产品发布页",
+    "fetchedAt": "2026-09-03T10:00:00+08:00",
+    "kind": "url"
+  },
+  "generation": {
+    "provider": "none",
+    "allow": []
+  },
+  "tts": {
+    "provider": "seed2",
+    "speaker": "zh_male_qingshuangnanda_uranus_bigtts",
+    "rate": 28
+  },
+  "notes": "占位内容：只用来验证模板的 16 种场景都能渲染。真实项目请整套替换 content/*.json。"
+}

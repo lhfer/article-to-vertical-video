@@ -1,0 +1,16 @@
+{
+  "sources": [
+    {
+      "id": "s1",
+      "url": "https://openai.com/index/gpt-6-astra/",
+      "title": "KiCad demo caption on the launch page",
+      "quote": "This is a 15-second condensed playback of GPT‑6 Astra performing printed circuit board (PCB) layout in KiCad, turning an electronic schematic into a manufacturable PCB."
+    },
+    {
+      "id": "s2",
+      "url": "https://openai.com/index/gpt-6-astra/",
+      "title": "Higgsfield AI quote",
+      "quote": "It successfully executes our most complex creative workflows while using up to 20% fewer tokens than other models we've tested."
+    }
+  ]
+}

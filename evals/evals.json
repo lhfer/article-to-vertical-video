@@ -1,0 +1,95 @@
+{
+  "skill_name": "article-to-vertical-video",
+  "notes": "Every assertion is checkable from files in the workdir. Paths are relative to the workdir the prompt names. Fixtures live in evals/files/. No eval requires SEED_AUDIO_KEY or grok; evals 1–5 stop before TTS and before an HD render.",
+  "evals": [
+    {
+      "id": 1,
+      "name": "launch page with tables and demo clips → brief, lint-clean content, storyboard, stills",
+      "prompt": "把 https://openai.com/index/gpt-6-astra/ 做成一条 3:4 的竖版中文解读视频（打工人视角：它能替我干什么、该信几分），要有跑分对比、页面上的演示片段，以及带出处的观点。这次做到静态帧预览为止：写好 brief 和内容 JSON、过 lint、出 storyboard 给我看，再出静态帧；不要配音，不要渲染完整视频。工作目录用 /tmp/a2v-eval1",
+      "expected_output": "assets/article.md + media.json + clips.json; project/content/{brief,script,bench,sources,narration-durations}.json passing lint_content.mjs and check_numbers.mjs; out/storyboard.md with metrics; stills for hook, bench, clip, take, summary, cta rendering without errors.",
+      "files": [],
+      "assertions": [
+        "project/content/brief.json exists, validates against schemas/brief.schema.json, and has type launch-explainer, platforms including xhs-3x4, persona.phrasebank set, shortVersion.enabled true",
+        "assets/article.md was extracted from the live page (fetch_page.py; not from news summaries) and contains the benchmark tables; brief.source.fetchedAt is set",
+        "at least 10 demo clips were transcoded into project/public/clips (NN.mp4 and NN.bg.mp4) and assets/clips.json lists them with hasAudio",
+        "`node scripts/lint_content.mjs /tmp/a2v-eval1/project` exits 0 (zero ERROR lines); no L-SRC warnings remain",
+        "`node scripts/check_numbers.mjs /tmp/a2v-eval1/project /tmp/a2v-eval1/assets/article.md` reports zero MISS",
+        "script.json contains at least one bench beat with role evidence, at least two clip beats each with a focus rect and resultAt, at least one take beat or takes[] entry with source referencing sources.json, exactly one beat with role turn, a summary beat and a cta beat; bench.json includes at least one table where the hero is not the top value",
+        "at least four beats carry short: true, including the hook and the cta",
+        "out/storyboard.md exists and its metrics line shows turn position between 35% and 75% and estimated total within ±20% of brief.targetSeconds",
+        "out/stills/ contains PNGs for a hook, a bench, a clip, a take, a summary and a cta beat, each rendered without error, Chinese text legible (no tofu boxes) and captions inside the frame",
+        "project/src is byte-identical to the skill's assets/template/src (doctor.sh template checksum passes) — the model edited only content/*.json",
+        "project/public/narration/ has no mp3 and out/ has no full-resolution mp4 (no TTS, no HD render)"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "product update post with no comparison tables → no bench beats, cards/kinetic/image beats instead",
+      "prompt": "这是一篇产品更新公告（没有跑分表），我存了页面：evals/files/product-update.html，页面里的两张图我另存在 evals/files/product-update-images/（页面里的图片链接是打不开的，把这两张拷到 assets/raw/img/ 当手动素材）。做成 60 秒左右的 3:4 竖版中文视频，说清这次更新对用户意味着什么。做到 lint 通过 + storyboard + 3 张静态帧即可，不配音不渲染。工作目录 /tmp/a2v-eval2",
+      "expected_output": "brief type news-brief (or launch-explainer) with tier s; script.json without bench beats; evidence carried by scorecard / kinetic / image / steps beats; lint passes; storyboard and stills produced.",
+      "files": ["evals/files/product-update.html", "evals/files/product-update-images/01.png", "evals/files/product-update-images/02.png"],
+      "assertions": [
+        "assets/article.md was produced with `fetch_page.py --from-html evals/files/product-update.html` and brief.source.kind is html",
+        "project/content/brief.json validates; targetSeconds is between 45 and 75 (tier s)",
+        "script.json has zero beats of kind bench and bench.json is absent or has an empty tables list",
+        "script.json uses at least one scorecard or steps beat and at least one kinetic beat; at least one image beat references images/NN.jpg that exists under project/public/images (from the hand-dropped assets/raw/img files; the page's own image URLs fail and are listed in report.md)",
+        "every number in cards, captions and narration (5 people, 96%, 4 seconds vs 13, $4.99, $39, 7 days) is present in article.md — check_numbers reports zero MISS",
+        "`lint_content.mjs` exits 0; no L-TURN error (tier s does not require a turn) and L-TOTAL-LEN is not raised",
+        "out/storyboard.md exists; out/stills/ has at least three PNGs including the hook and one scorecard/steps beat",
+        "no mp3 under project/public/narration and no full-resolution mp4 under out/"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Chinese long-form article with images only (36kr / 虎嗅 style) → image and screenshot beats, tier m",
+      "prompt": "把这篇 36 氪风格的长文做成一条 3 分钟左右的 3:4 竖版视频，页面我存好了：evals/files/36kr-style.html（里面只有图片，没有视频；图片链接打不开，原图我放在 evals/files/36kr-images/ 里，按顺序对应文中三张图，拷到 assets/raw/img/ 用）。用文章自己的三张图，讲清它做对了什么、踩了什么坑；做到 lint 通过、storyboard、以及 hook / image / take / summary 四张静态帧。不配音不渲染。工作目录 /tmp/a2v-eval3",
+      "expected_output": "brief type case-reel or data-story, targetSeconds ≈ 180 (tier m); the three hand-dropped images transcoded into project/public/images; script.json with image/screenshot beats carrying highlight rects, chapters, a turn beat about 它还没解决的, a summary; lint clean.",
+      "files": ["evals/files/36kr-style.html", "evals/files/36kr-images/01.jpg", "evals/files/36kr-images/02.jpg", "evals/files/36kr-images/03.jpg"],
+      "assertions": [
+        "assets/article.md came from `fetch_page.py --from-html` and contains the three figcaptions; assets/images.json lists 3 images (from assets/raw/img) and project/public/images has 3 jpg files; report.md notes that the page's image URLs were unreachable",
+        "brief.json validates with type case-reel or data-story and targetSeconds between 150 and 240",
+        "script.json has at least 3 image or screenshot beats whose src exist under project/public/images, at least one with a highlight rect inside w×h",
+        "script.json has at least two chapter beats, exactly one beat with role turn (drawing on the 它还没解决的 / 踩过的坑 sections), a summary beat and a cta beat",
+        "numbers used on screen (23 → 9 人, 78%, 4.6 分, 19% → 31%, 1,742 条, 38 万元) all appear in article.md — check_numbers reports zero MISS; no number is invented for the fictional company",
+        "narration contains no word from references/banned-words.txt (no L-BANNED) and first mentions of jargon carry a 人话 alias",
+        "`lint_content.mjs` exits 0; storyboard turn position is between 35% and 75%",
+        "out/stills/ has PNGs for hook, an image beat, a take beat and the summary; the image beat still shows the article photo, not a placeholder",
+        "no mp3 under project/public/narration and no full-resolution mp4 under out/"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "text-only opinion essay → opinion type, kinetic/quote/take beats, 75 s, 9:16 short only",
+      "prompt": "下面这篇是我自己写的观点文，没有图也没有链接，文本在 evals/files/opinion.txt。做一条 75 秒左右的 9:16 竖版短视频（只要抖音那一版，不要 3:4 长版），保留我的观点、标出是观点。做到 lint 通过、storyboard 和 hook / kinetic / take 三张静态帧，不配音不渲染。工作目录 /tmp/a2v-eval4",
+      "expected_output": "brief type opinion, targetSeconds 75 (tier s), platforms 9:16 only; script.json built from kinetic, quote, take, summary, cta beats (no bench, no clip); generated B-roll only if brief.generation.allow includes it; lint passes; ShortBeat stills produced.",
+      "files": ["evals/files/opinion.txt"],
+      "assertions": [
+        "assets/article.md was produced with `fetch_page.py --from-text evals/files/opinion.txt` and brief.source.kind is text",
+        "brief.json validates with type opinion, targetSeconds between 60 and 90, platforms containing only douyin-9x16 and/or xhs-9x16, and shortVersion.enabled false or absent",
+        "script.json has zero bench, clip, image or screenshot beats; at least two kinetic beats, at least one quote beat whose text is a verbatim sentence from opinion.txt, at least two take beats or takes[] entries",
+        "every quote beat text and every takes[].text is a substring of article.md or of the beat's narration (no L-TAKE-TEXT; no paraphrase presented as a quote)",
+        "the hook narration is ≤ 32 chars and states the viewer's stake, not the essay's title",
+        "`lint_content.mjs` exits 0 and reports no L-TURN error (tier s); L-TOTAL-LEN is not raised",
+        "out/stills/ contains ShortBeat renders (1080×1920 at --scale 0.5 → 540×960) for the hook, one kinetic and one take beat; captions sit above the bottom 350 px UI zone",
+        "no Main render or Main stills were produced; no mp3 under project/public/narration"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "short-cut consistency: 9:16 Short preview from eval 1's content and safe-area check",
+      "prompt": "用 /tmp/a2v-eval1 里已经写好的内容（GPT-6 那条），不改文案，出 9:16 的短版预览：先跑 lint 和 storyboard 看短版时长，再渲染 Short 的 0.25 倍预览，并给我短版每个 beat 的静态帧，检查字幕和卡片都在安全区内。不配音，不渲染高清。工作目录还是 /tmp/a2v-eval1",
+      "expected_output": "out/preview-short.mp4 (270×480) whose duration is within ±25% of brief.shortVersion.targetSeconds; ShortBeat stills for every short: true beat; captions and cards inside the 9:16 safe area; storyboard reports the short-cut total.",
+      "files": [],
+      "assertions": [
+        "project/content/script.json is unchanged from eval 1 except possibly short flags (diff shows no narration/lines/cards edits)",
+        "`lint_content.mjs` exits 0 and raises neither L-SHORT-STRUCT nor L-SHORT-LEN (short beats include hook and cta, ≥ 3 beats, estimated total within ±25% of shortVersion.targetSeconds)",
+        "out/storyboard.md (or storyboard.json) reports the short-cut total in seconds and it is within ±25% of brief.shortVersion.targetSeconds",
+        "out/preview-short.mp4 exists, ffprobe shows 270×480 (--scale=0.25 of 1080×1920) and a duration within ±25% of shortVersion.targetSeconds",
+        "out/stills/short-<id>.png exists for every beat with short: true, rendered from ShortBeat-<id> without error",
+        "in every short still, caption text and cards lie inside the 9:16 safe area: nothing within the bottom 350 px or the right 180 px of the 1080×1920 frame (scaled accordingly), and nothing under the top 200 px",
+        "the ShortBeat stills show the same numbers and hot words as the corresponding Beat stills from eval 1 (same content, different layout)",
+        "no mp3 under project/public/narration and no full-resolution mp4 under out/"
+      ]
+    }
+  ]
+}

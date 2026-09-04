@@ -1,0 +1,12 @@
+{
+  "beats": [
+    {"id": "hook", "kind": "hook", "start": 0, "seconds": 3, "energy": 4, "short": true, "vo": true},
+    {"id": "promise", "kind": "promise", "start": 3, "seconds": 4, "energy": 3, "short": false, "vo": true},
+    {"id": "ch-1", "kind": "chapter", "start": 7, "seconds": 0.8, "energy": 2, "short": false, "vo": false},
+    {"id": "clip-1", "kind": "clip", "start": 7.8, "seconds": 9, "energy": 3, "short": true, "vo": true},
+    {"id": "bench-1", "kind": "bench", "start": 16.8, "seconds": 8, "energy": 5, "short": true, "vo": true},
+    {"id": "take-1", "kind": "take", "start": 24.8, "seconds": 5, "energy": 2, "short": false, "vo": true},
+    {"id": "cta", "kind": "cta", "start": 29.8, "seconds": 4, "energy": 4, "short": true, "vo": true}
+  ],
+  "totalSeconds": 33.8
+}

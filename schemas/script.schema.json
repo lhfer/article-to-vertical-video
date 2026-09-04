@@ -1,0 +1,185 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "article-to-vertical-video/script",
+  "title": "script.json — the storyboard: ordered beats, each one scene",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["meta", "chapters", "beats"],
+  "properties": {
+    "meta": {
+      "type": "object", "additionalProperties": false, "required": ["brand", "source", "footer"],
+      "properties": {
+        "brand": { "type": "string", "maxLength": 24 },
+        "brandAccent": { "type": "string", "maxLength": 24 },
+        "source": { "type": "string", "maxLength": 40 },
+        "tagline": { "type": "string", "maxLength": 20 },
+        "finalLine": { "type": "string", "maxLength": 24 },
+        "footer": { "type": "string", "maxLength": 80 },
+        "bottomNote": { "type": "string", "maxLength": 40 }
+      }
+    },
+    "chapters": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["id", "num", "title"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+          "num": { "type": "string", "maxLength": 3 },
+          "title": { "type": "string", "maxLength": 18 },
+          "sub": { "type": "string", "maxLength": 48 }
+        }
+      }
+    },
+    "beats": { "type": "array", "minItems": 2, "items": { "$ref": "#/definitions/beat" } }
+  },
+  "definitions": {
+    "line": {
+      "type": "object", "additionalProperties": false, "required": ["text", "hot"],
+      "properties": {
+        "text": { "type": "string", "minLength": 1, "maxLength": 40, "description": "≤ 14 weighted chars (CJK 1, digit/latin 0.6, space 0); lint enforces" },
+        "hot": { "type": "array", "minItems": 1, "maxItems": 1, "items": { "type": "string", "minLength": 1 }, "description": "exactly one hot word, must occur in text" },
+        "kind": { "enum": ["fact", "take"], "default": "fact" },
+        "t": { "type": "number", "minimum": 0 },
+        "d": { "type": "number", "minimum": 0.5 }
+      }
+    },
+    "card": {
+      "type": "object", "required": ["t", "d", "kind"],
+      "properties": {
+        "t": { "type": "number", "minimum": 0 },
+        "d": { "type": "number", "minimum": 1 },
+        "kind": { "enum": ["stat", "chip", "quote"] },
+        "label": { "type": "string", "maxLength": 30 },
+        "value": { "type": "number" },
+        "unit": { "type": "string", "maxLength": 6 },
+        "prev": { "type": "number" },
+        "prevLabel": { "type": "string", "maxLength": 20 },
+        "sub": { "type": "string", "maxLength": 30 },
+        "text": { "type": "string", "maxLength": 60 },
+        "lowerIsBetter": { "type": "boolean" },
+        "source": { "type": "string", "description": "sources.json id when the number is not from the article" }
+      }
+    },
+    "rect": {
+      "type": "object", "additionalProperties": false, "required": ["x", "y", "w", "h"],
+      "properties": { "x": { "type": "number" }, "y": { "type": "number" }, "w": { "type": "number", "exclusiveMinimum": 0 }, "h": { "type": "number", "exclusiveMinimum": 0 } }
+    },
+    "take": {
+      "type": "object", "additionalProperties": false, "required": ["text"],
+      "properties": {
+        "text": { "type": "string", "minLength": 2, "maxLength": 80, "description": "must be a substring of this beat's narration or of one of its lines" },
+        "source": { "type": "string", "description": "sources.json id; required when the take states outside facts/numbers" }
+      }
+    },
+    "beat": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind"],
+      "description": "Payload object named after kind is required for every kind except chapter (lint enforces).",
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$", "maxLength": 32 },
+        "kind": { "enum": ["hook", "promise", "chapter", "bench", "clip", "kinetic", "quote", "steps", "image", "screenshot", "scorecard", "take", "broll", "summary", "cta", "outro"] },
+        "role": { "enum": ["open", "evidence", "so-what", "turn", "payoff", "close"] },
+        "chapter": { "type": "string" },
+        "short": { "type": "boolean", "default": false },
+        "narration": { "type": "string", "maxLength": 400 },
+        "takes": { "type": "array", "items": { "$ref": "#/definitions/take" } },
+        "lines": { "type": "array", "maxItems": 6, "items": { "$ref": "#/definitions/line" } },
+        "cards": { "type": "array", "maxItems": 2, "items": { "$ref": "#/definitions/card" } },
+        "minSeconds": { "type": "number", "minimum": 0.5 },
+        "maxSeconds": { "type": "number", "minimum": 1 },
+        "energy": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "sfx": { "enum": ["whoosh", "hit", "riser", "tick", "none"] },
+        "transition": { "enum": ["cut", "fade", "slide", "whip", "zoom", "wipe", "iris"] },
+
+        "hook": {
+          "type": "object", "additionalProperties": false, "required": ["text", "visual"],
+          "properties": {
+            "text": { "type": "string", "maxLength": 30 },
+            "sub": { "type": "string", "maxLength": 30 },
+            "visual": {
+              "type": "object", "additionalProperties": false, "required": ["kind"],
+              "properties": {
+                "kind": { "enum": ["broll", "image", "clip", "text"] },
+                "src": { "type": "string" }, "w": { "type": "integer" }, "h": { "type": "integer" },
+                "from": { "type": "number" }, "to": { "type": "number" }
+              }
+            }
+          }
+        },
+        "promise": {
+          "type": "object", "additionalProperties": false, "required": ["text"],
+          "properties": { "text": { "type": "string", "maxLength": 30 }, "items": { "type": "array", "maxItems": 5, "items": { "type": "string", "maxLength": 16 } } }
+        },
+        "bench": {
+          "type": "object", "additionalProperties": false, "required": ["tables", "mode", "heading"],
+          "properties": {
+            "tables": { "type": "array", "minItems": 1, "maxItems": 2, "items": { "type": "string" } },
+            "mode": { "enum": ["duel", "table"] },
+            "heading": { "type": "string", "maxLength": 16 },
+            "footnote": { "type": "string", "maxLength": 40 }
+          }
+        },
+        "clip": {
+          "type": "object", "additionalProperties": false, "required": ["src", "w", "h", "from", "to", "rate", "tag"],
+          "properties": {
+            "src": { "type": "string" }, "w": { "type": "integer", "minimum": 16 }, "h": { "type": "integer", "minimum": 16 },
+            "from": { "type": "number", "minimum": 0 }, "to": { "type": "number", "exclusiveMinimum": 0 },
+            "rate": { "type": "number", "minimum": 0.75, "maximum": 4 },
+            "tag": { "type": "string", "maxLength": 20 },
+            "focus": { "$ref": "#/definitions/rect" },
+            "resultAt": { "type": "number", "minimum": 0, "description": "source second where playback eases to 1x" },
+            "bg": { "enum": ["blur", "plate", "none"], "default": "blur" }
+          }
+        },
+        "kinetic": {
+          "type": "object", "additionalProperties": false, "required": ["text"],
+          "properties": { "text": { "type": "string", "maxLength": 24 }, "sub": { "type": "string", "maxLength": 30 } }
+        },
+        "quote": {
+          "type": "object", "additionalProperties": false, "required": ["text", "by"],
+          "properties": { "text": { "type": "string", "maxLength": 60 }, "by": { "type": "string", "maxLength": 24 } }
+        },
+        "steps": {
+          "type": "object", "additionalProperties": false, "required": ["title", "items"],
+          "properties": { "title": { "type": "string", "maxLength": 16 }, "items": { "type": "array", "minItems": 2, "maxItems": 5, "items": { "type": "string", "maxLength": 18 } } }
+        },
+        "image": {
+          "type": "object", "additionalProperties": false, "required": ["src", "w", "h"],
+          "properties": { "src": { "type": "string" }, "w": { "type": "integer" }, "h": { "type": "integer" }, "focus": { "$ref": "#/definitions/rect" }, "caption": { "type": "string", "maxLength": 24 } }
+        },
+        "screenshot": {
+          "type": "object", "additionalProperties": false, "required": ["src", "w", "h", "highlight", "label"],
+          "properties": { "src": { "type": "string" }, "w": { "type": "integer" }, "h": { "type": "integer" }, "highlight": { "$ref": "#/definitions/rect" }, "label": { "type": "string", "maxLength": 20 } }
+        },
+        "scorecard": {
+          "type": "object", "additionalProperties": false, "required": ["title", "rows"],
+          "properties": {
+            "title": { "type": "string", "maxLength": 16 },
+            "rows": { "type": "array", "minItems": 2, "maxItems": 5, "items": { "type": "object", "additionalProperties": false, "required": ["label", "value"], "properties": { "label": { "type": "string", "maxLength": 14 }, "value": { "type": "number" }, "unit": { "type": "string", "maxLength": 6 }, "max": { "type": "number" }, "hero": { "type": "boolean" } } } }
+          }
+        },
+        "take": {
+          "type": "object", "additionalProperties": false, "required": ["text"],
+          "properties": { "text": { "type": "string", "maxLength": 40 }, "source": { "type": "string" } }
+        },
+        "broll": {
+          "type": "object", "additionalProperties": false, "required": ["src", "w", "h"],
+          "properties": { "src": { "type": "string" }, "w": { "type": "integer" }, "h": { "type": "integer" }, "prompt": { "type": "string" }, "caption": { "type": "string", "maxLength": 24 } }
+        },
+        "summary": {
+          "type": "object", "additionalProperties": false, "required": ["title", "items"],
+          "properties": { "title": { "type": "string", "maxLength": 16 }, "items": { "type": "array", "minItems": 2, "maxItems": 5, "items": { "type": "string", "maxLength": 20 } } }
+        },
+        "cta": {
+          "type": "object", "additionalProperties": false, "required": ["question"],
+          "properties": { "question": { "type": "string", "maxLength": 30 }, "sub": { "type": "string", "maxLength": 24 } }
+        },
+        "outro": {
+          "type": "object", "additionalProperties": false, "required": ["lines"],
+          "properties": { "lines": { "type": "array", "minItems": 1, "maxItems": 6, "items": { "type": "string", "maxLength": 40 } } }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "type": "launch-explainer",
+  "targetSeconds": 60,
+  "platforms": ["xhs-3x4"],
+  "persona": { "viewpoint": "普通用户 / 打工人视角", "voiceStyle": "轻松口语，像跟朋友分享" },
+  "theme": "neon",
+  "mode": "template",
+  "language": "zh-CN",
+  "tts": { "provider": "seed2", "speaker": "zh_male_qingshuangnanda_uranus_bigtts", "rate": 28 }
+}
