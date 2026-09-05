@@ -1,0 +1,35 @@
+[
+  {
+    "format": "3x4",
+    "rms": {
+      "1": 0.12519201645755845,
+      "2.1": 0.12514245288647227,
+      "2.5": 0.006099479495303071,
+      "3.1": 0.12498429426671707,
+      "4.5": 0.009904643465129044
+    },
+    "result": "VO survives outgoing shot end at 2.0s; scheduled gap and following voice verified"
+  },
+  {
+    "format": "9x16",
+    "rms": {
+      "1": 0.12519201645755845,
+      "2.1": 0.12514245288647227,
+      "2.5": 0.006099479495303071,
+      "3.1": 0.12498429426671707,
+      "4.5": 0.009904643465129044
+    },
+    "result": "VO survives outgoing shot end at 2.0s; scheduled gap and following voice verified"
+  },
+  {
+    "format": "16x9",
+    "rms": {
+      "1": 0.12519201645755845,
+      "2.1": 0.12514245288647227,
+      "2.5": 0.006099479495303071,
+      "3.1": 0.12498429426671707,
+      "4.5": 0.009904643465129044
+    },
+    "result": "VO survives outgoing shot end at 2.0s; scheduled gap and following voice verified"
+  }
+]

@@ -1,0 +1,33 @@
+{
+  "version": 3,
+  "type": "news",
+  "audience": "对科技、AI感兴趣的普通用户",
+  "platforms": [
+    "bilibili",
+    "wechat-channels",
+    "xiaohongshu",
+    "douyin"
+  ],
+  "formats": [
+    "3x4",
+    "9x16",
+    "16x9"
+  ],
+  "primaryFormat": "3x4",
+  "durationPolicy": "content-led",
+  "narrationRequired": true,
+  "tts": {
+    "provider": "seed2",
+    "speaker": "zh_male_qingshuangnanda_uranus_bigtts",
+    "rate": 28,
+    "style": "阳光、青春、有活力、有亲和力，像与朋友分享有趣发现，重音与停顿跟随语义，表达自然清楚"
+  },
+  "generation": {
+    "provider": "grok-cli",
+    "quality": "quality-first"
+  },
+  "review": {
+    "script": true,
+    "openingSeconds": 10
+  }
+}

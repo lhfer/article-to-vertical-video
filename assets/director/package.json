@@ -1,0 +1,31 @@
+{
+  "name": "technology-video-director",
+  "version": "3.0.0",
+  "description": "Open, frame-driven V3 director project with three compositions",
+  "repository": {},
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@remotion/captions": "4.0.520",
+    "@remotion/cli": "4.0.520",
+    "@remotion/fonts": "4.0.520",
+    "@remotion/media": "4.0.520",
+    "@remotion/media-utils": "4.0.520",
+    "@remotion/transitions": "4.0.520",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "remotion": "4.0.520"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.7",
+    "@types/web": "0.0.166",
+    "typescript": "5.9.3"
+  },
+  "scripts": {
+    "dev": "remotion studio",
+    "compile": "node core/build.mjs",
+    "compile:draft": "node core/build.mjs --draft",
+    "check": "tsc --noEmit",
+    "build": "remotion bundle"
+  }
+}

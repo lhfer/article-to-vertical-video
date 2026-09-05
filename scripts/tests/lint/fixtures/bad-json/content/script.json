@@ -1,8 +1,0 @@
-{
-  "meta": { "brand": "Demo", "source": "DEMO · 2026", "footer": "数据来源：示例" },
-  "chapters": [],
-  "beats": [
-    { "id": "hook", "kind": "hook", "short": true, "narration": "我给你看个东西。", "hook": { "text": "看这个", "visual": { "kind": "clip", "src": "clips/01.mp4", "from": 0, "to": 3 } } },
-    { "id": "cta", "kind": "cta", "short": true, "narration": "你觉得呢？评论区聊聊。", "cta": { "question": "你觉得呢？" } }
-  ]
-}

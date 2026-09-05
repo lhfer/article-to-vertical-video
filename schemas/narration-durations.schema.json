@@ -1,8 +1,0 @@
-{
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "article-to-vertical-video/narration-durations",
-  "title": "narration-durations.json — seconds of synthesized voice-over per beat id; written by tts_seed2.py, {} before TTS has run",
-  "type": "object",
-  "propertyNames": { "pattern": "^[a-z0-9][a-z0-9-]*$", "maxLength": 32 },
-  "additionalProperties": { "type": "number", "minimum": 0 }
-}

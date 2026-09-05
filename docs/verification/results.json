@@ -1,0 +1,91 @@
+{
+  "package": {
+    "file": "article-to-vertical-video-v3.zip",
+    "files": 59,
+    "bytes": 108061,
+    "sha256": "dddcdf47226827bdcdf9e2414e6a0bd02ca55f3ef0bb87f6d934acc4cb5e63b0"
+  },
+  "unitTests": {
+    "node": 9,
+    "python": 9,
+    "passed": 18
+  },
+  "fullResolutionRenders": [
+    {
+      "format": "3x4",
+      "width": 1080,
+      "height": 1440,
+      "duration": "12.053333",
+      "frames": "360",
+      "hasAudio": true
+    },
+    {
+      "format": "9x16",
+      "width": 1080,
+      "height": 1920,
+      "duration": "12.053333",
+      "frames": "360",
+      "hasAudio": true
+    },
+    {
+      "format": "16x9",
+      "width": 1920,
+      "height": 1080,
+      "duration": "12.053333",
+      "frames": "360",
+      "hasAudio": true
+    }
+  ],
+  "grokMediaSmoke": [
+    {
+      "id": "paper",
+      "sha256": "4e3c76c2710a5a656700877796df4f2209b8c0c69c2db991c1ff7d6bc1a456a3",
+      "bytes": 577176
+    },
+    {
+      "id": "paper-motion",
+      "sha256": "a355f5781355dc80eb3003b5eff5ef93b5bb9030a20046b86107c577d12931fa",
+      "bytes": 1658042,
+      "duration": "6.041667",
+      "streams": [
+        {
+          "codec_type": "video",
+          "width": 816,
+          "height": 1104
+        },
+        {
+          "codec_type": "audio"
+        },
+        {
+          "codec_type": "video",
+          "width": 816,
+          "height": 1104
+        }
+      ]
+    },
+    {
+      "id": "paper-normalized",
+      "sha256": "3560a76a41123c1f19874c3bc472d5cf1e49a3723aed266fefb09ec41ea2d289",
+      "bytes": 1596899,
+      "duration": "6.041667",
+      "streams": [
+        {
+          "codec_type": "video",
+          "width": 816,
+          "height": 1104
+        },
+        {
+          "codec_type": "audio"
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Seed-TTS live synthesis not run: SEED_AUDIO_KEY absent in this execution environment",
+    "Grok skill discovery verified; Cursor and Claude Code binaries/install paths checked, full creative runs not executed",
+    "Synthetic tone fixtures verify scheduling, not spoken-voice quality",
+    "No real topic has yet passed user script and first-10-second approval",
+    "Behavioral eval scenarios included; not yet executed on all three agents"
+  ],
+  "packagingFix": "Retain the empty public directory with a tracked .gitkeep; rechecked from a clean checkout."
+}

@@ -1,0 +1,65 @@
+{
+  "version": 3,
+  "scope": "full",
+  "fps": 30,
+  "components": {
+    "ContinuousExample": "shots/ContinuousExample.tsx"
+  },
+  "style": {
+    "background": "#f4f3ef"
+  },
+  "voices": [],
+  "events": {
+    "connect": 3,
+    "focus": 8
+  },
+  "shots": [
+    {
+      "id": "example",
+      "component": "ContinuousExample",
+      "start": 0,
+      "end": 12,
+      "viewerGain": "观看连续主体的变化；这是接口演示。",
+      "props": {},
+      "layouts": {
+        "3x4": {
+          "centerX": 0.52,
+          "centerY": 0.61,
+          "titleY": 0.12
+        },
+        "9x16": {
+          "centerX": 0.5,
+          "centerY": 0.6,
+          "titleY": 0.13
+        },
+        "16x9": {
+          "centerX": 0.71,
+          "centerY": 0.5,
+          "titleY": 0.32
+        }
+      },
+      "assets": []
+    }
+  ],
+  "audio": [],
+  "assets": {},
+  "globalAssets": [],
+  "captions": {
+    "enabled": true,
+    "maxChars": 18,
+    "layouts": {
+      "3x4": {
+        "bottom": 100,
+        "fontSize": 48
+      },
+      "9x16": {
+        "bottom": 240,
+        "fontSize": 48
+      },
+      "16x9": {
+        "bottom": 80,
+        "fontSize": 44
+      }
+    }
+  }
+}

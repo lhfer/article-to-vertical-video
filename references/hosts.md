@@ -1,57 +1,43 @@
-# Hosts: Claude Code · Cursor · Codex · Gemini CLI · Grok Build
+# 一个创作核心，分别适配宿主与媒体提供者
 
-SKILL.md is host-agnostic: it says "hand the file to the user", "run detached", "ask the user". This table
-says what that means on each host. `<skill>` = the directory containing SKILL.md. Scripts, schemas and the
-Remotion template are identical everywhere; only the five verbs below differ.
+每个宿主可以独立完成整条制作流程。Grok 也可以只作为其他宿主调用的图像／视频提供者。将宿主自带的读取文件、运行命令、预览媒体、询问用户等动作映射到它当前实际提供的工具。脚本接口保持一致。
 
-| | Claude Code | Cursor | Codex | Gemini CLI | Grok Build |
-|---|---|---|---|---|---|
-| **Install dir** | `~/.claude/skills/<name>` | `~/.agents/skills` (also reads `~/.cursor/skills`, `.cursor/skills`, and `~/.claude/skills` for compatibility) | `~/.agents/skills` (project `.agents/skills` first) | `~/.agents/skills` or `~/.gemini/skills` | `~/.grok/skills`, `~/.agents/skills`, also `~/.claude/skills` |
-| **Resolve `<skill>`** | `${CLAUDE_SKILL_DIR}` is substituted in SKILL.md | the path this SKILL.md was loaded from (no variable) | same | same | same — no path substitution of any kind |
-| **Hand a file to the user** | `SendUserFile` when the tool exists (Remote Control / cloud sessions), else print the absolute path | print the absolute path; the user opens it from the editor | print the absolute path | print the absolute path | print the absolute path |
-| **Run a > 10-minute render** | run detached and poll: `nohup npx remotion render … > ../out/render.log 2>&1 &`, then a wait loop (`until ! pgrep -f "remotion render Main" >/dev/null; do sleep 10; done; tail -c 300 ../out/render.log`) or the `Monitor` tool when available (timeout up to 3,600,000 ms) | `Shell` with a long `block_until_ms` (up to ~2 h), or start it with `block_until_ms: 0` and check with `AwaitShell` | run in the terminal with a trailing `&`, poll `pgrep -f "remotion render"` and `tail` the log | same as Codex | same as Codex |
-| **Ask the user a question** | `AskUserQuestion` | plain question in chat, then stop the turn | `AskQuestion`-style tool when present, else plain question and stop | plain question and stop (Gemini also asks the user's consent when the skill activates) | `ask_user_question` |
-| **Media generation** | `python3 <skill>/scripts/media_provider.py --provider grok-cli …` (wraps `grok -p` headless via `grok_media.py`) | same | same | same | call the built-in `image_gen` / `image_edit` / `image_to_video` / `reference_to_video` tools directly, then register each output: `python3 <skill>/scripts/media_provider.py ingest --project <workdir>/project --id <id> --in <file> [--kind image\|video]` |
-| **Fetching pages** | `fetch_page.py` (curl_cffi) — the built-in `WebFetch` gets 403 on Cloudflare sites | `fetch_page.py` | `fetch_page.py` | `fetch_page.py` | `fetch_page.py`. grok's `web_fetch` is **off by default** (`GROK_WEB_FETCH=1` + allow-list) — never rely on it |
-| **TTS key** | `SEED_AUDIO_KEY` from the environment; keep a `config.env` next to the workdir (see `config.example.env`) and load it with `set -a; source config.env; set +a` before `tts_seed2.py` | same | same | same | same |
+| 宿主 | 推荐个人目录 | 项目目录 | 使用方式 |
+|---|---|---|---|
+| Claude Code | `~/.claude/skills/article-to-vertical-video` | `.claude/skills/article-to-vertical-video` | `/article-to-vertical-video` 或匹配的自然语言请求 |
+| Cursor | `~/.cursor/skills/article-to-vertical-video` | `.cursor/skills/article-to-vertical-video` | 在当前技能列表选择，或明确指定技能与素材 |
+| Grok Build CLI | `~/.grok/skills/article-to-vertical-video` | `.grok/skills/article-to-vertical-video` | 通过 `grok inspect` 查看实际发现项，再在会话中明确调用 |
+| Codex（兼容入口） | `~/.agents/skills/article-to-vertical-video` | `.agents/skills/article-to-vertical-video` | `$article-to-vertical-video`；可使用附带 UI 元数据 |
 
-## Host quirks worth knowing
+`python3 <skill>/scripts/install.py --hosts claude,cursor,grok` 为本机建立指向同一目录的链接；已有安装会保留并提示。`--project <repo> --copy` 将实际文件复制到项目，适用于云端或跨机器工作。检查重复技能时先查实际发现路径与版本，再有针对性地整理旧安装。
 
-- **Claude Code**: `SendUserFile` has a 30 MiB remote limit; a 60–150 MB mp4 is desktop-only — say it once,
-  do not apologize twice. A foreground `Bash` call dies at 10 minutes; a 3–5 minute video renders in
-  8–15 minutes on an M-series Mac, so always detach. `${CLAUDE_SKILL_DIR}` only exists in SKILL.md text, not
-  inside scripts — scripts locate the skill root from their own path.
-- **Cursor**: agents inherit the user's shell, so `uv`, `ffmpeg`, `node` on PATH work as in a terminal.
-  Cursor Cloud Agents only see **project** skills (`.cursor/skills`, `.agents/skills` in the repo), not
-  `~/.agents/skills`; copy or symlink the skill into the repo for cloud runs. No file-sending tool: print the
-  absolute path and, for stills, embed them with `![alt](/abs/path.png)` in chat.
-- **Codex**: reads `.agents/skills` → `~/.agents/skills`; an optional `agents/openai.yaml` next to
-  SKILL.md can declare UI hints and whether implicit triggering is allowed. Long jobs: background `&` +
-  poll; Codex may prompt for approval on each shell command in restricted modes — batch commands with `&&`.
-- **Gemini CLI**: asks the user's consent when a skill activates (expected, not an error). Reads
-  `~/.gemini/skills` and `~/.agents/skills`.
-- **Grok Build**: media tools (`image_gen`, `image_edit`, `image_to_video`, `reference_to_video`) need a
-  SuperGrok subscription and are unavailable in ZDR (zero-data-retention) mode; `image_to_video` is 6 or
-  10 s at 480p/720p; outputs land in the session's `images/N.jpg` / `videos/N.mp4` and carry an audio track
-  (`media_provider.py ingest` strips it and makes the `.bg.mp4` twin). Ignores `compatibility` and
-  `license` front-matter fields (harmless). Headless `grok -p --tools image_edit|image_to_video` working is a
-  local calibration, not a documented promise — if it stops, fall back to the built-in tools in an
-  interactive session.
-- **Every host**: never write `/Users/<name>/…` paths into content or scripts; the only user-specific
-  inputs are `<workdir>`, `SEED_AUDIO_KEY` and, optionally, `XAI_API_KEY` (only for `--provider grok-rest`).
+## 当前宿主能力适配
 
-## Install (all hosts at once)
+- 路径：从本 SKILL.md 的实际位置解析 `<skill>`。Claude Code 可提供技能目录变量；公共命令和脚本直接使用已解析路径，其他宿主同样可运行。
+- 用户确认：使用宿主可用的询问工具；没有专用工具时在对话中交付完整文案／样片并等待实际回复。继承当前对话已有确认。
+- 文件交付：使用宿主原生附件／视频预览或实际绝对路径。远程机器路径仅在远程环境有效，使用其支持的下载或附件机制交付本地用户。
+- 长渲染：优先使用宿主支持的长任务／会话句柄。回收该任务的退出码与日志，保持有意义的进度沟通；状态跟踪使用具体任务句柄或进程 pid。可恢复任务保存项目和日志。
+- 图片／视频查看：优先使用实际图像或视频预览；截图／抽帧与音轨试听补充证据。只有静帧时，将完整运动与听感列为未验证。
+- 生成媒体：所有宿主可以运行 `media.py` 调用已登录的 Grok CLI。Grok 自己具备可用媒体工具时，也可直接生成，再用 `--kind ingest` 登记输出。
 
-Keep one source directory and symlink it into the two locations the hosts read:
+## 能力探测与验证范围
 
-```bash
-SRC=/path/to/article-to-vertical-video
-mkdir -p ~/.claude/skills ~/.agents/skills
-ln -sfn "$SRC" ~/.claude/skills/article-to-vertical-video
-ln -sfn "$SRC" ~/.agents/skills/article-to-vertical-video
-bash "$SRC/scripts/doctor.sh"
-```
+`doctor.py` 检查本机可执行文件、版本和凭据是否可用；不会打印密钥。可执行文件存在、技能被发现、媒体工具可调用、真实生成成功、完整作品质量分别记录。用户的订阅授权与 API 计费通道分别使用，不把一种通道的可用性当作另一种已验证。
 
-Then check `/skills` (or the host's equivalent) in each host and make sure the skill is listed once, not
-twice (Cursor and Grok Build read both directories — remove the `~/.claude/skills` link on those machines if
-you see duplicates).
+Grok 低层调用沿用 V2 的 `grok -p --tools ... --output-format streaming-json` 包装器。媒体能力与流式事件格式存在版本差异：看本机 `--help`，运行针对当前任务的能力检查；接口失败时保留任务日志，诊断原因，再使用宿主可用的直接工具或导入路径。
+
+Cursor 桌面、CLI 与云端有不同资源环境。云端应使用项目内的实际文件并在执行机器配置依赖、Grok 登录与配音凭据；本机的绝对路径／软链接不能假定在云端存在。当前 Cursor 也支持特定个人技能同步选项，按实际设置确认。
+
+## 真实宿主验收用例
+
+各宿主分别在独立工作目录使用 `evals/evals.json` 的请求。第一轮应理解混合素材，交付完整脚本并停在真实确认点。明确批准脚本后应制作带声前十秒并停在第二确认点。之后完成三个画幅及检查。不同宿主可以有不同创作结果，使用相同观众标准和交付接口评审。
+
+使用 CLI 读取／发现检查不等于跑过上述完整任务。查看交付的验证报告了解本包实际跑到哪一层。
+
+## 官方依据（升级时重新核对）
+
+- [Claude Code Skills](https://code.claude.com/docs/en/skills)：目录、显式调用与发现规则。
+- [Cursor Skills](https://prod.cursor.com/docs/skills)：本地／项目目录及云端同步边界。
+- [Grok Build](https://docs.x.ai/build/overview)：本地交互、headless 与 inspect。
+
+V3 安装器以这些宿主自己的技能目录为默认入口，避免依赖某个宿主私有的工具名字或路径替换语法。

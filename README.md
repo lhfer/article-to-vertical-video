@@ -1,59 +1,42 @@
-# article-to-vertical-video
+# article-to-vertical-video V3
 
-An Agent Skill that turns any article (URL, saved HTML or pasted text) into a Chinese vertical explainer
-video with Remotion: a 3:4 long master (1080×1440, 小红书 / 视频号) and a 9:16 short cut (1080×1920,
-抖音 / 小红书) from one content set — animated captions, stat cards, benchmark duels, the page's own demo
-clips, Grok-generated cover / B-roll where the page has no media, a synthesized beat, and a Seed-TTS 2.0
-voice-over. Facts on screen come only from the article; opinions are marked as 观点 and sourced.
+面向普通科技与 AI 爱好者的科技视频创作 skill。3:4 主版，同时交付 9:16、16:9；内容决定时长。完整文案与前十秒动态样片由用户确认，其余制作自主完成。
 
-The agent reads `SKILL.md` and writes `project/content/*.json`; the scripts and the locked Remotion template
-do the rest.
+## 下载与验证
 
-## Install
+- [下载 V3 安装包](https://github.com/lhfer/article-to-vertical-video/releases/download/v3.0.0/article-to-vertical-video-v3.zip)
+- [V3 升级与验证说明](docs/v3-upgrade.md)
+- [V2 历史版本](https://github.com/lhfer/article-to-vertical-video/tree/v2.0.0)
 
-Keep this directory as the source of truth and symlink it into the skill folders your hosts read:
+## 安装
 
-```bash
-SRC="$(pwd)"                                              # this directory
-mkdir -p ~/.claude/skills ~/.agents/skills
-ln -sfn "$SRC" ~/.claude/skills/article-to-vertical-video   # Claude Code
-ln -sfn "$SRC" ~/.agents/skills/article-to-vertical-video   # Cursor, Codex, Gemini CLI, Copilot, Grok Build
-bash scripts/doctor.sh --fix-fonts                          # prerequisites, template checksum, fonts
-```
-
-`doctor.sh` needs node ≥ 20, npm, ffmpeg/ffprobe, python3 (uv preferred, for curl_cffi + trafilatura);
-optional: whisper-cli, grok CLI (Grok Heavy) for generated visuals, `SEED_AUDIO_KEY` for the voice
-(`config.example.env`). Per-host details (Cursor Cloud, Gemini consent, Grok Build tools): `references/hosts.md`.
-
-## The 9 steps
-
-| # | step | command(s) | output |
-|---|---|---|---|
-| 0 | Brief | `bash scripts/doctor.sh`; write `project/content/brief.json` | type, length, platform, persona, theme |
-| 1 | Fetch | `uv run --with curl_cffi --with trafilatura python3 scripts/fetch_page.py <url> assets` (`--from-html` / `--from-text`) | `article.md`, `media.json` |
-| 2 | Media | `download_media.sh`, `contact_sheet.sh`, `propose_trims.py` | `clips/NN.mp4` + `.bg.mp4`, `images/`, `frames/`, `trims.json` |
-| 3 | Insight + script | write `script.json` `bench.json` `sources.json`; `lint_content.mjs`; `check_numbers.mjs`; `media_provider.py` for allowed generated shots | lint-clean content |
-| 4 | Storyboard | `storyboard.py project --out out/storyboard.md --json out/storyboard.json` | user review before audio |
-| 5 | Scaffold + preview | `rsync` template, `npm i`, `fetch_fonts.sh`, `make_sfx.py`, `make_bgm.py --energy`, `tsc`, `remotion still`, `render --scale=0.25` | stills, `preview-main.mp4` |
-| 6 | Voice | `tts_seed2.py --sample` then full; re-lint, re-storyboard | `narration/*.mp3`, `narration-durations.json` |
-| 7 | Render | `remotion render Main` / `Short` `--codec=h264 --crf=18`; `master_audio.sh` | `<slug>.mp4`, `<slug>-short.mp4` |
-| 8 | Publish pack | `media_provider.py cover`, `remotion still Cover` | `cover.png`, `publish.md`, `report.md` |
-
-## Layout
-
-`SKILL.md` (workflow, < 250 lines) · `schemas/` (content contract) · `scripts/` (all take `--help`) ·
-`assets/template/` (Remotion project, copied per video; the model never edits `src/`) · `references/`
-(briefs, content guide, hosts, themes, voices, troubleshooting, media generation, glossary, banned words,
-examples, the GPT-6 worked example) · `evals/` (5 evals + fixtures).
-
-Maintainer notes and the contract every part agrees on: `DESIGN.md`.
-
-## Tests
+将本目录解压到希望长期保存的位置。先检查已有安装，再选择宿主安装；安装器会保留已有目录。
 
 ```bash
-for t in scripts/tests/*/run_tests.sh; do bash "$t"; done      # unit tests per script group
-bash scripts/tests/e2e.sh /tmp/a2v-e2e                          # example → lint → storyboard → template → stills → low-res Main + Short
-SKIP_RENDER=1 bash scripts/tests/e2e.sh /tmp/a2v-e2e            # stop after the stills
-node scripts/lint_content.mjs references/example-gpt6            # the worked example must stay lint-clean
-node scripts/check_numbers.mjs references/example-gpt6 references/example-gpt6/article.md
+python3 scripts/doctor.py
+python3 scripts/install.py --hosts claude,cursor,grok --dry-run
+python3 scripts/install.py --hosts claude,cursor,grok
 ```
+
+项目／云端使用：`python3 scripts/install.py --hosts cursor --project <project-root> --copy`。Codex 可加入 `--hosts codex`。宿主入口、凭据与运行差异见 [hosts](references/hosts.md)。
+
+## 开始使用
+
+在所选 Agent 中指定本 skill，提供链接、文件、录屏或想法，例如：“把这些材料做成面向普通用户的科技视频，先给我完整文案。”
+
+本包包含创作指导、开放 Remotion 骨架、数据／媒体／审核工具、测试与四类行为评测。运行入口在 [SKILL.md](SKILL.md)，详细工程步骤在 [runtime](references/runtime.md)。配音使用已有 Seed 声线，读取环境变量 `SEED_AUDIO_KEY`；Grok 生成使用当前机器的已登录 CLI。
+
+## 维护验证
+
+```bash
+node --test tests/timeline.test.mjs
+python3 -m unittest discover -s tests -p 'test_*.py'
+cd assets/director
+npm ci
+npm run check
+npm run compile:draft
+```
+
+完整的离线三画幅音轨测试：安装依赖后，从技能根目录运行 `python3 tests/render_smoke.py --workdir <fresh-test-directory>`；附 `--scale 1` 可验证目标交付尺寸。测试使用合成音调和明确标记的测试确认记录，仅验证工程行为。
+
+V3 是新的导演工程，不会直接覆盖旧 V2 项目。现有 V2 视频继续用原工程重渲染；迁移时在新工程复用原文案与媒体，重新安排镜头和实际音频时码。旧版的固定模板规范没有被带入新默认流程。
